@@ -16,7 +16,10 @@ bool checkInputValue(int *pvalueToCompare) {
     
    
 }
-
+void removeCard() {
+}
+void addCard() {
+}
 void welcome() {
 //name input player 
 //and short explaination of game
@@ -26,10 +29,10 @@ void addCardsTofakeList () {
   
     //add Carts to spesific address 
 }
-void radomMixOfCardStack() {
+void radomMixOfCardStack(Card *pFirstCard,Card *pLastCard) {
     //self explaint
 }
-void distributeCardsToPlayers() {
+void distributeCardsToPlayers(Card* pFirstCard, Card* pLastCard) {
     //Give each player their Stack of Cards
 }
 void getFirstElementOfCardStack() {
@@ -64,9 +67,10 @@ char defineHigherCard(Card* playerCard, Card* enemyCard, int* valueToCheck) {
     }
 }
 
-void addCardToListOfWinner() {
+void addCardToListOfWinnerAndPutSecondTo() {
     //Get first cart of loser and set behinde stack of winner with first card of winner
 }
+
 void checkListSizeOfPlayers() {
     //Check the List Of Players every round
     //if 0 ||/0 than winner is Player with not Zero Cards
