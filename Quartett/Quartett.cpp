@@ -16,25 +16,33 @@ bool checkInputValue(int *pvalueToCompare) {
     
    
 }
+//TODO: Raksana
 void removeCard() {
 }
+
+//TODO: Raksana
 void addCard() {
 }
+//TODO: Raksana
 void welcome() {
 //name input player 
 //and short explaination of game
 }
- 
+
+ //TODO: Tamara
 void addCardsTofakeList () {
   
     //add Carts to spesific address 
 }
+//TODO: Raksana
 void radomMixOfCardStack(Card *pFirstCard,Card *pLastCard) {
     //self explaint
 }
+//TODO: Tamara
 void distributeCardsToPlayers(Card* pFirstCard, Card* pLastCard) {
     //Give each player their Stack of Cards
 }
+//TODO: Tamara
 void getFirstElementOfCardStack() {
     //Get First element of player and enemy of Stack ^^
 }
@@ -66,15 +74,16 @@ char defineHigherCard(Card* playerCard, Card* enemyCard, int* valueToCheck) {
         return *pEnemy;
     }
 }
-
+//TODO: Raksana
 void addCardToListOfWinnerAndPutSecondTo() {
     //Get first cart of loser and set behinde stack of winner with first card of winner
 }
-
+//TODO: Tamara
 void checkListSizeOfPlayers() {
     //Check the List Of Players every round
     //if 0 ||/0 than winner is Player with not Zero Cards
 }
+//TODO: Tamara
 void showWinner() {
     //show who and ask if player wannt's to play again
 }
