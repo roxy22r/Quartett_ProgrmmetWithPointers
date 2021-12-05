@@ -43,39 +43,71 @@ bool checkInputValue(int *pvalueToCompare) {
         return  (*pvalueToCompare == 1 || *pvalueToCompare == 2);
     
 }
-
-
-/*
-* Author of mehtod Raksana
-* Dise Methode schiebt die Karte eins nach Oben
-*/
-Card *moveCardUp(Player* pPlayer,Card* moveTo) {
-    Card* pTemp = pPlayer->pfirstCardOfList;
-    while (true)
-    {
-        if (pTemp->pNext==moveTo) {
-            pTemp->pNext = moveTo->pNext;
-            moveTo->pNext = NULL;
-            return moveTo;
-        }                                  
-        pTemp = pTemp->pNext;
-    }
-   
-
-}
-
 /*
 * Author of mehtod Raksana
 * Dise Methode fügt die Karte zum schluss hinzu
 */
-void addCard(Card *cardToAdd,Player* pPlayer) {
+void addCard(Card* cardToAdd, Player* pPlayer) {
     cardToAdd->pNext = NULL;
-    pPlayer->pLastCardOfList->pNext= cardToAdd;
+    pPlayer->pLastCardOfList->pNext = cardToAdd;
     pPlayer->pLastCardOfList = pPlayer->pLastCardOfList->pNext;
-    
-    printf("============================");
+
+    printf("addCart");
     Output(pPlayer->pfirstCardOfList);
 }
+/*
+* Author of mehtod Raksana
+* Dise Methode nimmt die Liste auseinander 
+* an einer  bestimmten postition
+* und fügt sie wieder hinzu.
+* Ein Listen Object wird weggenommen.Das Objekt,
+* dass weggenommen wird wird zurück gegeben.
+*/
+Card* splittListAndMerge(Player* pPlayer,Card* moveTo) {
+    Card* pRemovedCard = pPlayer->pfirstCardOfList;
+    Card* ptemp2 = pPlayer->pfirstCardOfList;
+    Card* ptemp = pPlayer->pfirstCardOfList;
+    while (ptemp->pNext != NULL && moveTo != pPlayer->pfirstCardOfList)
+    {
+        ptemp = ptemp->pNext;
+        if (ptemp->pNext == moveTo && pPlayer->pfirstCardOfList != moveTo)
+        {
+            pRemovedCard = ptemp->pNext;
+            ptemp->pNext = ptemp->pNext->pNext;
+            printf("splitted and merged Cart");
+            return pRemovedCard;
+            
+            break;
+
+        }
+
+
+    }
+   
+ 
+}
+
+/*
+* Author of mehtod Raksana
+* Dise Methode schiebt die Karte eins nach Oben.
+*/
+Card *moveCardUp(Player* pPlayer,Card* moveTo) {
+    if (pPlayer->pfirstCardOfList!= moveTo)
+    {
+       return splittListAndMerge(pPlayer, moveTo);
+    }else{
+    Card* pRemovedCard = pPlayer->pfirstCardOfList;
+      pPlayer->pfirstCardOfList = pPlayer->pfirstCardOfList->pNext;
+     return pRemovedCard; 
+    }
+ 
+  
+   
+   
+
+}
+
+
 /*
 * Author of mehtod Raksana
 * Diese Methode entfernt die Karte schiebt, die näachte Karte hoch 
@@ -89,11 +121,12 @@ void removeCard(Player* pPlayer, Card *pCardToRemove) {
         if (pTemp==pCardToRemove)
         {
             Card* removedCard = pPlayer->pfirstCardOfList;
-            Card* temp=moveCardUp(pPlayer,pPlayer->pfirstCardOfList);
+            Card* temp=moveCardUp(pPlayer, pCardToRemove);
             addCard(removedCard, pPlayer);
+            printf("::::::::::::::::::::::::::");
             Output(pPlayer->pfirstCardOfList);
         }
-        pTemp=pTemp->pNext;
+        pTemp=pTemp->pNext;      
     }
 }
 
@@ -104,13 +137,26 @@ void welcome() {
 //and short explaination of game
 }
 
-                       
+                                   
 //TODO: Raksana
 void radomMixOfCardStack(Player *pPlayer) {
+  
+    for (int i = 0; i < 5; i++)
+    {
+        Card * pTemp = pPlayer->pfirstCardOfList;
+        int randNr=rand() % 4;
+        int* pRandNr = &randNr;
+        int j=0;
+        for (int *pj = &j; *pj < *pRandNr; *pj++) {
+        
+            pTemp = pTemp->pNext;
+        }
+        Card *toEnd=moveCardUp(pPlayer,pTemp);
+        addCard(toEnd,pPlayer);
+        printf("//////////RANDOM////////");
+        Output(pPlayer->pfirstCardOfList);
+    }
     
-    moveCardUp(pPlayer,pPlayer->pLastCardOfList);
-    printf("/////////////////////////////////////////////////");
-    Output(pPlayer->pfirstCardOfList);
     
 
 }
@@ -138,13 +184,11 @@ int inputCompareValue() {
 }
 
 // author of mehtod Raksana
-char defineHigherCard(Card* playerCard, Card* enemyCard, int* valueToCheck) {
-    char player = 'P';
-    char enemy = 'E';
-    char* pPlayer = &player;
-    char* pEnemy = &player;
+Player defineHigherCard(Player* pPlayer, Player* pEnemy, int* valueToCheck) {
+    Card* enemy= pEnemy->pfirstCardOfList;
+    Card* player= pPlayer->pfirstCardOfList;
 
-    if ((*valueToCheck == 1 && playerCard->usetime > enemyCard->usetime) || (*valueToCheck == 2 && playerCard->wight > enemyCard->wight))
+    if ((*valueToCheck == 1 && player->usetime > enemy->usetime) || (*valueToCheck == 2 && player->wight > enemy->wight))
     {
         return *pPlayer;
     }
@@ -228,7 +272,7 @@ int main()
     pPlayer->pLastCardOfList = pCard6;
     radomMixOfCardStack(pPlayer);
     printf("@@@@@@@@@@@@@@@@@@@@");
-    Output(pStartPlayer);
+    Output(pPlayer->pfirstCardOfList);
     system("pause");
     return 0;
 }
