@@ -115,12 +115,13 @@ Card *moveCardUp(Player* pPlayer,Card* moveTo) {
 */
 
 Card * removeCard(Player* pPlayer, Card *pCardToRemove) {
+    Card* removed = pPlayer->pfirstCardOfList;
     Card* pTemp= pPlayer->pfirstCardOfList;
     while (pTemp->pNext!= pCardToRemove->pNext->pNext)
     {
         if (pTemp==pCardToRemove)
         {
-            Card* removedCard = pPlayer->pfirstCardOfList;
+            removed = pPlayer->pfirstCardOfList;
             Card* temp=moveCardUp(pPlayer, pCardToRemove);
             break;
             printf("::::::::::::::::::::::::::");
@@ -128,7 +129,7 @@ Card * removeCard(Player* pPlayer, Card *pCardToRemove) {
         pTemp=pTemp->pNext;      
     }
             Output(pPlayer->pfirstCardOfList);
-            return removeCard;
+            return removed;
 }
 
 
@@ -138,6 +139,20 @@ void welcome() {
 //and short explaination of game
 }
 
+
+/*Autor: Tamara
+* Es schaut wie viele Karten ein Spieler hat
+*/
+int sizeOfCardStack(Player* pPlayer) {
+    int count = 0;
+    Card* pTemp = pPlayer->pfirstCardOfList;
+    while (pTemp->pNext != NULL)
+    {
+        pTemp = pTemp->pNext;
+        count++;
+    }
+    return count;
+}
                                    
 //TODO: Raksana
 void radomMixOfCardStack(Player *pPlayer) {
@@ -161,14 +176,37 @@ void radomMixOfCardStack(Player *pPlayer) {
     
 
 }
+Card* getIndex (int index, Player* pPlayer) {
+    Card* pTemp = pPlayer->pfirstCardOfList;
+    int countDown=index;
+    while (countDown!=0)
+    {
+        *pTemp = *pTemp->pNext;
+        countDown--;
+    }
+    Output(pTemp);
+    return pTemp;
+    
+
+}
+Card* getLast(Card* pPlayer) {
+    Player tempPlayer;
+    Player *pTempPlayer = &tempPlayer;
+    pTempPlayer->pfirstCardOfList = pPlayer;
+    int indexLastCard=sizeOfCardStack(pTempPlayer);
+   return getIndex(indexLastCard,pTempPlayer);
+   
+
+}
+
 //TODO: Tamara
 void distributeCardToPlayers(Player* player,Player* enemy, Player* cardDistributer) {
-    Card* secondCardStack = getindex(5, cardDistributer);
+    Card* secondCardStack = getIndex(5, cardDistributer);
     Card* firstCardStack = removeCard(cardDistributer, secondCardStack);
     player->pfirstCardOfList = firstCardStack;
     enemy->pfirstCardOfList = secondCardStack;
-    player->pLastCardOfList = getLastCard(firstCardStack);
-    enemy->pLastCardOfList = getLastCard(secondCardStack);
+    player->pLastCardOfList = getLast(firstCardStack);
+    enemy->pLastCardOfList = getLast(secondCardStack);
      
     //Give each player their Stack of Cards
 }
@@ -209,19 +247,6 @@ void addCardToListOfWinnerAndPutSecondTo() {
     //Get first cart of loser and set behinde stack of winner with first card of winner
 }
 
-/*Autor: Tamara
-* Es schaut wie viele Karten ein Spieler hat
-*/
-void sizeOfCardStack(Player* pPlayer) {
-    int count = 0;
-    Card* pTemp = pPlayer->pfirstCardOfList;
-    while (pTemp->pNext != NULL)
-    {
-        pTemp = pTemp->pNext;
-        count++;
-    }
-    printf("count i: %i\n",count);
-}
 
 //TODO: Tamara
 void showWinner() {
@@ -287,8 +312,8 @@ int main()
     struPlayer* pPlayer = (Player*)malloc(sizeof(Player));
     pPlayer->pfirstCardOfList = pStartPlayer;
     pPlayer->pLastCardOfList = pCard6;
-    sizeOfCardStack(pPlayer);
-    Output(pPlayer->pfirstCardOfList);
+    Card* cards = getLast(pPlayer->pfirstCardOfList);
+    Output(cards);
     system("pause");
     return 0;
 }
