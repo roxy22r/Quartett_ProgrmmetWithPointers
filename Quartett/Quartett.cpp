@@ -163,9 +163,13 @@ void radomMixOfCardStack(Player *pPlayer) {
 }
 //TODO: Tamara
 void distributeCardToPlayers(Player* player,Player* enemy, Player* cardDistributer) {
-    Card* splittedCardStack = getindex(5, cardDistributer);
-     removeCard();
-
+    Card* secondCardStack = getindex(5, cardDistributer);
+    Card* firstCardStack = removeCard(cardDistributer, secondCardStack);
+    player->pfirstCardOfList = firstCardStack;
+    enemy->pfirstCardOfList = secondCardStack;
+    player->pLastCardOfList = getLastCard(firstCardStack);
+    enemy->pLastCardOfList = getLastCard(secondCardStack);
+     
     //Give each player their Stack of Cards
 }
 //TODO: Tamara
