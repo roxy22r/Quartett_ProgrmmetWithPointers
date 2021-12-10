@@ -114,7 +114,7 @@ Card *moveCardUp(Player* pPlayer,Card* moveTo) {
 * und fügt die Karte zum Schluss von dem Talon hinzu
 */
 
-void removeCard(Player* pPlayer, Card *pCardToRemove) {
+Card * removeCard(Player* pPlayer, Card *pCardToRemove) {
     Card* pTemp= pPlayer->pfirstCardOfList;
     while (pTemp->pNext!= pCardToRemove->pNext->pNext)
     {
@@ -122,12 +122,13 @@ void removeCard(Player* pPlayer, Card *pCardToRemove) {
         {
             Card* removedCard = pPlayer->pfirstCardOfList;
             Card* temp=moveCardUp(pPlayer, pCardToRemove);
-            addCard(removedCard, pPlayer);
+            break;
             printf("::::::::::::::::::::::::::");
-            Output(pPlayer->pfirstCardOfList);
         }
         pTemp=pTemp->pNext;      
     }
+            Output(pPlayer->pfirstCardOfList);
+            return removeCard;
 }
 
 
@@ -161,7 +162,10 @@ void radomMixOfCardStack(Player *pPlayer) {
 
 }
 //TODO: Tamara
-void distributeCardsToPlayers(Player player,Player enemy) {
+void distributeCardToPlayers(Player* player,Player* enemy, Player* cardDistributer) {
+    Card* splittedCardStack = getindex(5, cardDistributer);
+     removeCard();
+
     //Give each player their Stack of Cards
 }
 //TODO: Tamara
@@ -200,34 +204,43 @@ Player defineHigherCard(Player* pPlayer, Player* pEnemy, int* valueToCheck) {
 void addCardToListOfWinnerAndPutSecondTo() {
     //Get first cart of loser and set behinde stack of winner with first card of winner
 }
-//TODO: Tamara
-void checkListSizeOfPlayers() {
-    //Check the List Of Players every round
-    //if 0 ||/0 than winner is Player with not Zero Cards
+
+/*Autor: Tamara
+* Es schaut wie viele Karten ein Spieler hat
+*/
+void sizeOfCardStack(Player* pPlayer) {
+    int count = 0;
+    Card* pTemp = pPlayer->pfirstCardOfList;
+    while (pTemp->pNext != NULL)
+    {
+        pTemp = pTemp->pNext;
+        count++;
+    }
+    printf("count i: %i\n",count);
 }
+
 //TODO: Tamara
 void showWinner() {
     //show who and ask if player wannt's to play again
 }
 
-
-
-
-
-
+/*Autor: Tamara
+* Erstellen von Karten -> Informationen der verschiedenen Laptops
+*/
 int main()
 {
-   
+    //1.) Apple MacBook Pro (2021)
     struCard* pcard  = (struCard*)malloc(sizeof(struCard));
-    strcpy_s(pcard->Bez,"1Card");
-    pcard->usetime = 2;
-    pcard->wight = 1.3;
+    strcpy_s(pcard->Bez,"Apple MacBook Pro(2021)");
+    pcard->usetime = 17;
+    pcard->wight = 1.6;
     pcard->pNext = NULL;
     struCard* pStartPlayer=pcard;
-    //
+   
+    // 2.) 
     pcard = (struCard*)malloc( sizeof(struCard));
-    strcpy_s(pcard->Bez, "2Card");
-    pcard->usetime = 3;
+    strcpy_s(pcard->Bez, "ACER Swift 1-C0WY");
+    pcard->usetime = 16;
     pcard->wight = 1.5;
     pcard->pNext = NULL;
     pStartPlayer->pNext = pcard;
@@ -270,8 +283,7 @@ int main()
     struPlayer* pPlayer = (Player*)malloc(sizeof(Player));
     pPlayer->pfirstCardOfList = pStartPlayer;
     pPlayer->pLastCardOfList = pCard6;
-    radomMixOfCardStack(pPlayer);
-    printf("@@@@@@@@@@@@@@@@@@@@");
+    sizeOfCardStack(pPlayer);
     Output(pPlayer->pfirstCardOfList);
     system("pause");
     return 0;
