@@ -344,6 +344,7 @@ int main()
     pCard9->pNext = pcard;
     struCard* pCard10 = pcard;
 
+    // 
     //start eneamy Card Talon
 
     struPlayer* pPlayer = (Player*)malloc(sizeof(Player));
