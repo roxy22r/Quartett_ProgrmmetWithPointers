@@ -19,7 +19,7 @@ typedef struct Player {
 }struPlayer;
 
 
-// author of mehtod Raksana
+// Autor der Methode Raksana
 void Output(Card* firstCard) {
     Card* pTemp = firstCard;
     while (pTemp != NULL)
@@ -35,7 +35,7 @@ void Output(Card* firstCard) {
 
 }
 /*
-* Author of mehtod Raksana
+* Autor der Methode Raksana
 * Dise Methode schaut,ob der Wert 1 oder 2 ist
 */
 bool checkInputValue(int *pvalueToCompare) {
@@ -44,7 +44,7 @@ bool checkInputValue(int *pvalueToCompare) {
     
 }
 /*
-* Author of mehtod Raksana
+* Autor der Methode Raksana
 * Dise Methode fügt die Karte zum schluss hinzu
 */
 void addCard(Card* cardToAdd, Player* pPlayer) {
@@ -56,7 +56,7 @@ void addCard(Card* cardToAdd, Player* pPlayer) {
     Output(pPlayer->pfirstCardOfList);
 }
 /*
-* Author of mehtod Raksana
+* Autor der Methode Raksana
 * Dise Methode nimmt die Liste auseinander 
 * an einer  bestimmten postition
 * und fügt sie wieder hinzu.
@@ -81,14 +81,12 @@ Card* splittListAndMerge(Player* pPlayer,Card* moveTo) {
 
         }
 
-
     }
-   
  
 }
 
 /*
-* Author of mehtod Raksana
+* Autor der Methode Raksana
 * Dise Methode schiebt die Karte eins nach Oben.
 */
 Card *moveCardUp(Player* pPlayer,Card* moveTo) {
@@ -100,10 +98,6 @@ Card *moveCardUp(Player* pPlayer,Card* moveTo) {
       pPlayer->pfirstCardOfList = pPlayer->pfirstCardOfList->pNext;
      return pRemovedCard; 
     }
- 
-  
-   
-   
 
 }
 
@@ -210,11 +204,12 @@ void distributeCardToPlayers(Player* player,Player* enemy, Player* cardDistribut
      
     //Give each player their Stack of Cards
 }
-//TODO: Tamara
+// TODO: Tamara
 void getFirstElementOfCardStack() {
     //Get First element of player and enemy of Stack ^^
 }
-// author of mehtod Raksana
+
+// Autor der Methode Raksana
 int inputCompareValue() {
     int valueToCompare;
     int* pvalueToCompare = &valueToCompare;
@@ -229,7 +224,7 @@ int inputCompareValue() {
 
 }
 
-// author of mehtod Raksana
+// Autor der Methode Raksana
 Player defineHigherCard(Player* pPlayer, Player* pEnemy, int* valueToCheck) {
     Card* enemy= pEnemy->pfirstCardOfList;
     Card* player= pPlayer->pfirstCardOfList;
@@ -250,7 +245,7 @@ void addCardToListOfWinnerAndPutSecondTo() {
 
 //TODO: Tamara
 void showWinner() {
-    //show who and ask if player wannt's to play again
+    //show who won and ask if player wants to play again
 }
 
 /*Autor: Tamara
@@ -266,7 +261,7 @@ int main()
     pcard->pNext = NULL;
     struCard* pStartPlayer=pcard;
    
-    // 2.) 
+    // 2.) ACER Swift 1-C0WY
     pcard = (struCard*)malloc( sizeof(struCard));
     strcpy_s(pcard->Bez, "ACER Swift 1-C0WY");
     pcard->usetime = 16;
@@ -274,40 +269,82 @@ int main()
     pcard->pNext = NULL;
     pStartPlayer->pNext = pcard;
     struCard* pCard2 = pcard;
-    //
+
+    // 3.) HP Pavilion Aero 13
     pcard = (struCard*)malloc(sizeof(struCard));
-    strcpy_s(pcard->Bez, "3Card");
-    pcard->usetime = 4;
-    pcard->wight = 1.7;
+    strcpy_s(pcard->Bez, "HP Pavilion Aero 13");
+    pcard->usetime = 10;
+    pcard->wight = 1.0;
     pcard->pNext = NULL;
     pCard2->pNext = pcard;
     struCard* pCard3 = pcard;
-    //
+
+    // 4.) MICROSOSFT Surface Go
     pcard = (struCard*)malloc(sizeof(struCard));
-    strcpy_s(pcard->Bez, "4Card");
-    pcard->usetime = 5;
-    pcard->wight = 8.6;
+    strcpy_s(pcard->Bez, "MICROSOSFT Surface Go");
+    pcard->usetime = 13;
+    pcard->wight = 1.110;
     pcard->pNext = NULL;
     pCard3->pNext = pcard;
     struCard* pCard4 = pcard;
-    //
+
+    // 5.) LENOVO V15
     pcard = (struCard*)malloc(sizeof(struCard));
-    strcpy_s(pcard->Bez, "5Card");
+    strcpy_s(pcard->Bez, "LENOVO V15");
     pcard->usetime = 6;
-    pcard->wight = 4.6;
+    pcard->wight = 1.85;
     pcard->pNext = NULL;
     pCard4->pNext = pcard;
     struCard* pCard5 = pcard;
-    //
-    //    
+ 
+    // 6.) HUAWEI MateBook D15
     pcard = (struCard*)malloc(sizeof(struCard));
-    strcpy_s(pcard->Bez, "6Card");
+    strcpy_s(pcard->Bez, "HUAWEI MateBook D15");
     pcard->usetime = 7;
-    pcard->wight = 9.6;
+    pcard->wight = 1.53;
     pcard->pNext = NULL;
     pCard5->pNext = pcard;
     struCard* pCard6 = pcard;
-    //strat eneamy Card Talon
+
+    //KONTROLLIEREN
+
+    // 7.) LENOVO ThinkPad P17
+    pcard = (struCard*)malloc(sizeof(struCard));
+    strcpy_s(pcard->Bez, "LENOVO ThinkPad P17");
+    pcard->usetime = 8;
+    pcard->wight = 3.67;
+    pcard->pNext = NULL;
+    pCard6->pNext = pcard;
+    struCard* pCard7 = pcard;
+
+    // 8.) DELL Latitude 7410
+    pcard = (struCard*)malloc(sizeof(struCard));
+    strcpy_s(pcard->Bez, "DELL Latitude 7410");
+    pcard->usetime = 6;
+    pcard->wight = 1.33;
+    pcard->pNext = NULL;
+    pCard7->pNext = pcard;
+    struCard* pCard8 = pcard;
+
+    // 9.) HP OMEN
+    pcard = (struCard*)malloc(sizeof(struCard));
+    strcpy_s(pcard->Bez, "HP OMEN");
+    pcard->usetime = 6;
+    pcard->wight = 2.45;
+    pcard->pNext = NULL;
+    pCard8->pNext = pcard;
+    struCard* pCard9 = pcard;
+
+    // 10.) ASUS E210MA
+    pcard = (struCard*)malloc(sizeof(struCard));
+    strcpy_s(pcard->Bez, "ASUS E210MA");
+    pcard->usetime = 5;
+    pcard->wight = 1.05;
+    pcard->pNext = NULL;
+    pCard9->pNext = pcard;
+    struCard* pCard10 = pcard;
+
+    //start eneamy Card Talon
 
     struPlayer* pPlayer = (Player*)malloc(sizeof(Player));
     pPlayer->pfirstCardOfList = pStartPlayer;
