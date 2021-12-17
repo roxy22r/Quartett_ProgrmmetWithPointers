@@ -94,7 +94,7 @@ Card *moveCardUp(Player* pPlayer,Card* moveTo) {
     {
        return splittListAndMerge(pPlayer, moveTo);
     }else{
-    Card* pRemovedCard = pPlayer->pfirstCardOfList;
+      Card* pRemovedCard = pPlayer->pfirstCardOfList;
       pPlayer->pfirstCardOfList = pPlayer->pfirstCardOfList->pNext;
      return pRemovedCard; 
     }
@@ -155,9 +155,9 @@ void radomMixOfCardStack(Player *pPlayer) {
     {
         Card * pTemp = pPlayer->pfirstCardOfList;
         int randNr=rand() % 4;
-        int* pRandNr = &randNr;
-        int j=0;
-        for (int *pj = &j; *pj < *pRandNr; *pj++) {
+       
+     
+        for (int pj =0; pj < randNr; pj++) {
         
             pTemp = pTemp->pNext;
         }
@@ -205,7 +205,11 @@ void distributeCardToPlayers(Player* player,Player* enemy, Player* cardDistribut
     //Give each player their Stack of Cards
 }
 // TODO: Tamara
-void getFirstElementOfCardStack() {
+void getFirstElementOfCardStack(Player* pPlayer) {
+    printf("%s",pPlayer->pfirstCardOfList->Bez);
+    printf("%i",pPlayer->pfirstCardOfList->usetime);
+    printf("%lf",pPlayer->pfirstCardOfList->wight);
+
     //Get First element of player and enemy of Stack ^^
 }
 
@@ -220,25 +224,25 @@ int inputCompareValue() {
         return *pvalueToCompare;
     }
 
-    inputCompareValue();
+    return *pvalueToCompare;
 
 }
 
 // Autor der Methode Raksana
-Player defineHigherCard(Player* pPlayer, Player* pEnemy, int* valueToCheck) {
+Player *defineHigherCard(Player* pPlayer, Player* pEnemy, int* valueToCheck) {
     Card* enemy= pEnemy->pfirstCardOfList;
     Card* player= pPlayer->pfirstCardOfList;
 
     if ((*valueToCheck == 1 && player->usetime > enemy->usetime) || (*valueToCheck == 2 && player->wight > enemy->wight))
     {
-        return *pPlayer;
+        return pPlayer;
     }
     else {
-        return *pEnemy;
+        return pEnemy;
     }
 }
 //TODO: Raksana
-void addCardToListOfWinnerAndPutSecondTo() {
+void addCardToListOfWinnerAndPutSecondTo(Player* pWinner,Player* pLoser) {
     //Get first cart of loser and set behinde stack of winner with first card of winner
 }
 
@@ -251,18 +255,17 @@ void showWinner() {
 /*Autor: Tamara
 * Erstellen von Karten -> Informationen der verschiedenen Laptops
 */
-int main()
-{
-    //1.) Apple MacBook Pro (2021)
-    struCard* pcard  = (struCard*)malloc(sizeof(struCard));
-    strcpy_s(pcard->Bez,"Apple MacBook Pro(2021)");
+Card * allCards() {
+    // 1.) Apple MacBook Pro(2021)
+    struCard* pcard = (struCard*)malloc(sizeof(struCard));
+    strcpy_s(pcard->Bez, "Apple MacBook Pro(2021)");
     pcard->usetime = 17;
     pcard->wight = 1.6;
     pcard->pNext = NULL;
-    struCard* pStartPlayer=pcard;
-   
+    struCard* pStartPlayer = pcard;
+
     // 2.) ACER Swift 1-C0WY
-    pcard = (struCard*)malloc( sizeof(struCard));
+    pcard = (struCard*)malloc(sizeof(struCard));
     strcpy_s(pcard->Bez, "ACER Swift 1-C0WY");
     pcard->usetime = 16;
     pcard->wight = 1.5;
@@ -296,7 +299,7 @@ int main()
     pcard->pNext = NULL;
     pCard4->pNext = pcard;
     struCard* pCard5 = pcard;
- 
+
     // 6.) HUAWEI MateBook D15
     pcard = (struCard*)malloc(sizeof(struCard));
     strcpy_s(pcard->Bez, "HUAWEI MateBook D15");
@@ -305,8 +308,6 @@ int main()
     pcard->pNext = NULL;
     pCard5->pNext = pcard;
     struCard* pCard6 = pcard;
-
-    //KONTROLLIEREN
 
     // 7.) LENOVO ThinkPad P17
     pcard = (struCard*)malloc(sizeof(struCard));
@@ -343,15 +344,32 @@ int main()
     pcard->pNext = NULL;
     pCard9->pNext = pcard;
     struCard* pCard10 = pcard;
+    return pStartPlayer;
+}
 
-    // 
-    //start eneamy Card Talon
 
-    struPlayer* pPlayer = (Player*)malloc(sizeof(Player));
-    pPlayer->pfirstCardOfList = pStartPlayer;
-    pPlayer->pLastCardOfList = pCard6;
-    Card* cards = getLast(pPlayer->pfirstCardOfList);
-    Output(cards);
+int main()
+{    
+    Card* pStart = allCards();
+
+    struPlayer* pPlayer = (struPlayer*)malloc(sizeof(struPlayer));
+    struPlayer* pEnemy = (struPlayer*)malloc(sizeof(struPlayer));
+    struPlayer* pDist = (struPlayer*)malloc(sizeof(struPlayer));
+   Card *pEnd =getLast(pStart);
+    pDist->pfirstCardOfList = pStart;
+    pDist->pLastCardOfList = pEnd;
+    radomMixOfCardStack(pDist);
+    distributeCardToPlayers(pPlayer,pEnemy,pDist);
+    //rename getFirstElement to Output first
+    while (sizeOfCardStack(pPlayer)!=0||sizeOfCardStack!=0)
+    {
+
+     getFirstElementOfCardStack(pPlayer);
+     int compear=inputCompareValue();
+     // Player *pWinnner=defineHigherCard(pPlayer, pEnemy, &compear);
+     //addCardToListOfWinnerAndPutSecondTo(pWinnner);
+    }
+    
     system("pause");
     return 0;
 }
