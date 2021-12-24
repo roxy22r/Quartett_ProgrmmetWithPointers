@@ -19,49 +19,120 @@ typedef struct Player {
 }struPlayer;
 
 int main();
-void Output(Card* firstCard);
-bool checkInputValue(int* pvalueToCompare);
+//
+Card* allCards();
 void addCard(Card* cardToAdd, Player* pPlayer);
-Card* splittListAndMerge(Player* pPlayer, Card* moveTo);
-Card* moveCardUp(Player* pPlayer, Card* moveTo);
-Card* removeCard(Player* pPlayer, Card* pCardToRemove);
-void welcome();
-int sizeOfCardStack(Player* pPlayer);
-void radomMixOfCardStack(Player* pPlayer);
+//
+bool checkInputValue(int* pvalueToCompare);
+//
+void distributeCardToPlayers(Player* player, Player* enemy, Player* cardDistributer);
+Player* defineHigherCard(Player* pPlayer, Player* pEnemy, int* valueToCheck);
+//
 Card* getIndex(int index, Player* pPlayer);
 Card* getLast(Card* pPlayer);
-void distributeCardToPlayers(Player* player, Player* enemy, Player* cardDistributer);
-void printFirstElementOfCardStack(Player* pPlayer);
+//
 int inputCompareValue();
-Player* defineHigherCard(Player* pPlayer, Player* pEnemy, int* valueToCheck);
-void addCardToListOfWinnerAndPutSecondTo(Player* pWinner, Player* pLoser);
-void showWinner();
-Card* allCards();
+//
+Card* moveCardUp(Player* pPlayer, Card* moveTo);
+//
+void playQuartett(Player* pPlyer);
+void printWordQuartett();
+//
+void Output(Card* firstCard);
+//
+Card* removeCard(Player* pPlayer, Card* pCardToRemove);
+void radomMixOfCardStack(Player* pPlayer);
+//
+Card* setpNextToNull(Card* card);
+void setupQuartett(Player* pPlayer, Player* pEnemy);
+Card* splittListAndMerge(Player* pPlayer, Card* moveTo);
+int sizeOfCardStack(Player* pPlayer);
+void showFirstElementOfCardStack(Player* pPlayer);
+void showWinner(Player* pWinner);
+void setupCardsOfRound(Player* pWinner, Player* pLoser);
+void setupWinnerFromRound(Player* pPlayer, Player* pEnemy, int* valueToCheck);
+//
+Player* welcome(Player* pPlayer);
 
 
 int main()
 {
-    Card* pStart = allCards();
     struPlayer* pPlayer = (struPlayer*)malloc(sizeof(struPlayer));
     struPlayer* pEnemy = (struPlayer*)malloc(sizeof(struPlayer));
+    //strcpy_s(pEnemy->name, "Computer");
+    pPlayer = welcome(pPlayer);
+    setupQuartett(pPlayer,pEnemy);
+    playQuartett(pPlayer);
+
+    system("pause");
+    return 0;
+}
+
+//Autor: Raksana
+Player* welcome(Player* pPlayer) {
+    printWordQuartett();
+    int zahl = 0;
+    int* pzahl = &zahl;
+    printf("Um das Spiel zu beginnen gib die Zahl  1 ein\n");
+    while (zahl != 1) {
+        scanf_s(" %i", pzahl);
+    }
+    printf("Wie heisst du?\n");
+   // scanf_s(" %*s",pPlayer->name);
+    printf("Schnelle Anleitung:");
+    printf("Um den ersten Wert zu vergleichen von der Karte musst du 1 eingeben.\n");
+    printf("Um den zweiten Wert zu vergleichen von der Karte musst du 2 eingeben.\n");
+    printf("Wer den groesseren Wert hat gewinnt die Runde und bekommt die Karte vom Verlierer.\n");
+    printf("Der Verlierer ist der, wo keine Karten mehr hat.\n\n");
+    return pPlayer;
+
+}
+//Autor: Raksana
+void printWordQuartett() {
+    printf("*---------------------------------------------------------------------------------*\n");
+    printf("|                                                                                |\n");
+    printf("|   _______           _______  _______ _________ _______ __________________      |\n");
+    printf("|  (  ___  )|\\     /|(  ___  )(  ____ )\\__   __/(  ____ \\\\__   __/\\__   __/      |\n");
+    printf("|  | (   ) || )   ( || (   ) || (    )|   ) (   | (    \\/   ) (      ) (         |\n");
+    printf("|  | |   | || |   | || (___) || (____)|   | |   | (__       | |      | |         |\n");
+    printf("|  | |   | || |   | ||  ___  ||     __)   | |   |  __)      | |      | |         |\n");
+    printf("|  | | /\\| || |   | || (   ) || (\\ (      | |   | (         | |      | |         |\n");
+    printf("|  | (_\\ \\ || (___) || )   ( || ) \\ \\__   | |   | (____/\\   | |      | |         |\n");
+    printf("|  (____\\/_)(_______)|/     \\||/   \\__/   )_(   (_______/   )_(      )_(         |\n");
+    printf("|                                                                                |\n");
+    printf("*--------------------------------------------------------------------------------*\n");
+}
+
+//Autor: Raksana
+void setupQuartett(Player* pPlayer,Player* pEnemy) {
+    Card* pStart = allCards();
     struPlayer* pDist = (struPlayer*)malloc(sizeof(struPlayer));
     Card* pEnd = getLast(pStart);
     pDist->pfirstCardOfList = pStart;
     pDist->pLastCardOfList = pEnd;
     radomMixOfCardStack(pDist);
     distributeCardToPlayers(pPlayer, pEnemy, pDist);
-    //rename getFirstElement to Output first
+}
+//Autor: Raksana
+void playQuartett(Player* pPlayer,Player* pEnemy) {
     while (sizeOfCardStack(pPlayer) != 0 || sizeOfCardStack != 0)
     {
 
-        printFirstElementOfCardStack(pPlayer);
+        showFirstElementOfCardStack(pPlayer);
         int compear = inputCompareValue();
-        Player* pWinnner = defineHigherCard(pPlayer, pEnemy, &compear);
-      //  addCardToListOfWinnerAndPutSecondTo(pWinnner);
+        setupWinnerFromRound(pPlayer,pEnemy, &compear);
+    }
+}
+//Autor: Raksana
+void setupWinnerFromRound(Player* pPlayer, Player* pEnemy, int* valueToCheck) {
+    Player* pWinner = defineHigherCard(pPlayer, pEnemy, valueToCheck);
+    if (pPlayer == pWinner) {
+        setupCardsOfRound(pWinner, pEnemy);
+    }
+    else {
+        setupCardsOfRound(pWinner, pPlayer);
     }
 
-    system("pause");
-    return 0;
 }
 /*Autor: Tamara
 * Erstellen von Karten -> Informationen der verschiedenen Laptops
@@ -158,14 +229,14 @@ Card* allCards() {
     return pStartPlayer;
 }
 
-// Autor der Methode Raksana
+// Autor: Raksana
 void Output(Card* firstCard) {
     Card* pTemp = firstCard;
     while (pTemp != NULL)
     {
         printf(" %s\n", pTemp->Bez);
-        printf(" usetime: %i\n", pTemp->usetime);
-        printf(" wight: %lf\n", pTemp->wight);
+        printf(" Nutzungszeit: %i\n", pTemp->usetime);
+        printf(" Gewicht: %lf\n", pTemp->wight);
         printf("\n");
         pTemp = pTemp->pNext;
     }
@@ -262,12 +333,6 @@ Card * removeCard(Player* pPlayer, Card *pCardToRemove) {
 }
 
 
-//TODO: Raksana
-void welcome() {
-//name input player 
-//and short explaination of game
-}
-
 
 /*Autor: Tamara
 * Es schaut wie viele Karten ein Spieler hat
@@ -283,7 +348,9 @@ int sizeOfCardStack(Player* pPlayer) {
     return count;
 }
                                    
-//TODO: Raksana
+/*Autor: Raksana
+
+*/
 void radomMixOfCardStack(Player *pPlayer) {
   
     for (int i = 0; i < 5; i++)
@@ -332,7 +399,7 @@ void distributeCardToPlayers(Player* player,Player* enemy, Player* cardDistribut
     Card* firstCardStack = removeCard(cardDistributer, secondCardStack);
     player->pfirstCardOfList = firstCardStack;
     Card* lastFirst= getIndex(4, player);
-    lastFirst->pNext = NULL;
+    lastFirst =setpNextToNull(lastFirst);
     enemy->pfirstCardOfList = secondCardStack;
     player->pLastCardOfList = getLast(firstCardStack);
     enemy->pLastCardOfList = getLast(secondCardStack);
@@ -340,7 +407,7 @@ void distributeCardToPlayers(Player* player,Player* enemy, Player* cardDistribut
     //Give each player their Stack of Cards
 }
 // TODO: Tamara
-void printFirstElementOfCardStack(Player* pPlayer) {
+void showFirstElementOfCardStack(Player* pPlayer) {
     printf("$.Bezeichnung: %s \n",pPlayer->pfirstCardOfList->Bez);
     printf("1.Nutzungszeit:%i \n",pPlayer->pfirstCardOfList->usetime);
     printf("2.Gewicht: %lf \n",pPlayer->pfirstCardOfList->wight);
@@ -362,18 +429,19 @@ int inputCompareValue() {
     return *pvalueToCompare;
 
 }
+Card* setpNextToNull(Card* card) {
+    card->pNext = NULL;
+    return card;
+}
 
 // Autor der Methode Raksana
 //winnerIs
 Player * defineHigherCard(Player* pPlayer, Player* pEnemy, int* valueToCheck) {
-    
     Card* enemy= pEnemy->pfirstCardOfList;
     Card* player= pPlayer->pfirstCardOfList;
 
     if ((*valueToCheck == 1 && player->usetime > enemy->usetime) || (*valueToCheck == 2 && player->wight > enemy->wight))
     {
-       
-
         return pPlayer;
     }
     else {
@@ -381,13 +449,18 @@ Player * defineHigherCard(Player* pPlayer, Player* pEnemy, int* valueToCheck) {
     }
 }
 //TODO: Raksana
-void addCardToListOfWinnerAndPutSecondTo(Player* pWinner,Player* pLoser) {
-   
+void setupCardsOfRound(Player* pWinner,Player* pLoser) {
+    Card* winnCard = removeCard(pLoser, pLoser->pfirstCardOfList);
+    Card* firstCardWinner = removeCard(pWinner, pWinner->pfirstCardOfList);
+    winnCard = setpNextToNull(winnCard);
+    firstCardWinner=setpNextToNull(firstCardWinner);
+    addCard(winnCard,pWinner);
+    addCard(firstCardWinner, pWinner);
 }
 
 
 //TODO: Tamara
-void showWinner() {
+void showWinner(Player* pWinner) {
     //show who won and ask if player wants to play again
 }
 
