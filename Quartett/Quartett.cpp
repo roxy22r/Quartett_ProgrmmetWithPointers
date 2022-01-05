@@ -1,9 +1,6 @@
-#include <iostream>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <string>
-
 
 typedef struct Card{
     char Bez[50];
@@ -26,10 +23,12 @@ void addCard(Card* cardToAdd, Player* pPlayer);
 bool checkInputValue(int* pvalueToCompare);
 //
 void distributeCardToPlayers(Player* player, Player* enemy, Player* cardDistributer);
+
 Player* defineHigherCard(Player* pPlayer, Player* pEnemy, int* valueToCheck);
 //
 Card* getIndex(int index, Player* pPlayer);
 Card* getLast(Card* pPlayer);
+Player* getWinner(Player* player, Player* enemy);
 //
 int inputCompareValue();
 //
@@ -89,18 +88,35 @@ Player* welcome(Player* pPlayer) {
 
 }
 /*Autor: Raksana
-* 
+* ENEMY NICHT GLEICH NULL
 */
 void playQuartett(Player* pPlayer,Player * pEnemy)
 {
-    while (sizeOfCardStack(pPlayer) != 0 || sizeOfCardStack != 0)
+    while (sizeOfCardStack(pEnemy) != 0 ||sizeOfCardStack(pPlayer) != 0)
     {
 
         showFirstElementOfCardStack(pPlayer);
         int compear = inputCompareValue();
         setupWinnerFromRound(pPlayer, pEnemy, &compear);
+
+        int cardOfPlayer = sizeOfCardStack(pPlayer);
+        int cardOfEnemy = sizeOfCardStack(pEnemy);
+        printf("Du hast: %i Karten\n", cardOfPlayer);
+        printf("Der Gegner hat: %i Karten\n", cardOfEnemy);
     }
+    Player* winner = getWinner(pPlayer, pEnemy);
+    showWinner(winner);
 }
+
+Player* getWinner(Player* player, Player* enemy) {
+    int cardOfPlayer = sizeOfCardStack(player);
+    int cardOfEnemy = sizeOfCardStack(enemy);
+    if (cardOfPlayer > cardOfEnemy) {
+        return player;
+    }
+    return enemy;
+}
+
 //Autor: Raksana
 void printWordQuartett() {
     printf("*---------------------------------------------------------------------------------*\n");
@@ -247,8 +263,12 @@ Card * removeCard(Player* pPlayer, Card *pCardToRemove) {
 
 
 /*Autor: Tamara
-* Es schaut wie viele Karten ein Spieler hat
+* Es schaut wie viele Karten ein Spieler hat.
+* pTemp ist die erste Karte vom Spieler.
+* Danach wird so lange zum nächsten Verkettungspunkt gezeigt,
+* bis der Verkettungspunkt NULL ist.
 */
+
 int sizeOfCardStack(Player* pPlayer) {
     int count = 0;
     Card* pTemp = pPlayer->pfirstCardOfList;
@@ -283,18 +303,18 @@ void radomMixOfCardStack(Player *pPlayer) {
  
 }
 /*Autor: Tamara
+* getIndex holt sich eine Karte an einem bestimmten Punkt in der Verkettetenliste.
 */
 Card* getIndex (int index, Player* pPlayer) {
     Card *pTemp = pPlayer->pfirstCardOfList;
     int countDown=index;
     while (countDown!=0)
     
-   {
+    {
         pTemp = pTemp->pNext;
        countDown--;
     }
     return pTemp;
-    
 
 }
 /*Autor: Raksana
@@ -310,7 +330,8 @@ Card* getLast(Card* pPlayer) {
 
 }
 
-//TODO: Tamara
+//Autor: Tamara
+//Hier werden die Karten zu den Spieler verteilt.
 void distributeCardToPlayers(Player* player,Player* enemy, Player* cardDistributer) {
     Card* secondCardStack = getIndex(5, cardDistributer);
     Card* firstCardStack = removeCard(cardDistributer, secondCardStack);
@@ -323,7 +344,9 @@ void distributeCardToPlayers(Player* player,Player* enemy, Player* cardDistribut
      
     //Give each player their Stack of Cards
 }
-// TODO: Tamara
+/*Autor: Tamara
+* Hier werden die Elemente im Quartett aufgelistet
+* */
 void showFirstElementOfCardStack(Player* pPlayer) {
     printf("$.Bezeichnung: %s \n",pPlayer->pfirstCardOfList->Bez);
     printf("1.Nutzungszeit:%i \n",pPlayer->pfirstCardOfList->usetime);
@@ -378,9 +401,11 @@ void setupCardsOfRound(Player* pWinner,Player* pLoser) {
 }
 
 
-//TODO: Tamara
+/* Autor: Tamara
+* Hier wird der Gewinner ausgegeben
+*/
 void showWinner(Player* pWinner) {
-    //show who won and ask if player wants to play again
+    printf ("Der Gewinner ist %s",pWinner->name);
 }
 
 /*Autor: Tamara
