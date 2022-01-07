@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
+#include <stdlib.h>
 
 typedef struct Card{
     char Bez[50];
@@ -20,7 +22,7 @@ int main();
 Card* allCards();
 void addCard(Card* cardToAdd, Player* pPlayer);
 //
-bool checkInputValue(int* pvalueToCompare);
+bool checkInputValue(int valueToCompare);
 //
 void distributeCardToPlayers(Player* player, Player* enemy, Player* cardDistributer);
 
@@ -39,7 +41,7 @@ void printWordQuartett();
 //
 Card* removeCard(Player* pPlayer, Card* pCardToRemove);
 void radomMixOfCardStack(Player* pPlayer);
-void replay();
+void replay(Player* pPlayer, Player* pEnemy);
 //
 Card* setpNextToNull(Card* card);
 void setupQuartett(Player* pPlayer, Player* pEnemy);
@@ -107,7 +109,7 @@ void playQuartett(Player* pPlayer,Player * pEnemy)
 
         showFirstElementOfCardStack(pPlayer);
         int compear = inputCompareValue();
-        bool validValue=checkInputValue(&compear);
+        bool validValue=checkInputValue(compear);
         if (validValue) {
             setupWinnerFromRound(pPlayer, pEnemy, &compear);
 
@@ -117,7 +119,7 @@ void playQuartett(Player* pPlayer,Player * pEnemy)
             printf("Der Gegner hat: %i Karten\n", cardOfEnemy);
         }
         else {
-            prinf("Sie können nur 1 oder 2 eingeben!!\n ");
+            printf("Sie dürfen nur 1 oder 2 eingeben!!\n\n\n ");
         }
     }
     Player* winner = getWinner(pPlayer, pEnemy);
@@ -191,9 +193,9 @@ void setupWinnerFromRound(Player* pPlayer, Player* pEnemy, int* valueToCheck) {
 * Autor: Raksana
 * Dise Methode schaut,ob der Wert 1 oder 2 ist
 */
-bool checkInputValue(int *pvalueToCompare) {
+bool checkInputValue(int valueToCompare) {
     
-        return  (*pvalueToCompare == 1 || *pvalueToCompare == 2);
+        return  (valueToCompare == 1 || valueToCompare == 2);
     
 }
 /*
@@ -299,8 +301,10 @@ int sizeOfCardStack(Player* pPlayer) {
 Hier werden die Karten Random gemischt.
 */
 void radomMixOfCardStack(Player *pPlayer) {
-    int rand = rand() % 4;
-    for (int i = 0; i < rand; i++)
+    
+    srand(time(0));
+    int randOne = rand() % 4;
+    for (int i = 0; i < randOne; i++)
     {
     Card * pTemp = pPlayer->pfirstCardOfList;
         int randNr=rand() % 4;
@@ -364,7 +368,7 @@ void distributeCardToPlayers(Player* player,Player* enemy, Player* cardDistribut
 * Hier werden die Elemente im Quartett aufgelistet
 * */
 void showFirstElementOfCardStack(Player* pPlayer) {
-    printf("$.Bezeichnung: %s \n",pPlayer->pfirstCardOfList->Bez);
+    printf("\n\n$.Bezeichnung: %s \n",pPlayer->pfirstCardOfList->Bez);
     printf("1.Nutzungszeit:%i \n",pPlayer->pfirstCardOfList->usetime);
     printf("2.Gewicht: %lf \n\n",pPlayer->pfirstCardOfList->wight);
 }
@@ -375,11 +379,7 @@ int inputCompareValue() {
     int valueToCompare;
     int* pvalueToCompare = &valueToCompare;
     printf("Geben Sie den Vergleichs wert ein: \n");
-    scanf_s("%i", pvalueToCompare);
-    if (checkInputValue(pvalueToCompare)) {
-        return *pvalueToCompare;
-    }
-
+    scanf_s(" %i", pvalueToCompare);
     return *pvalueToCompare;
 
 }
@@ -427,17 +427,17 @@ void setupCardsOfRound(Player* pWinner,Player* pLoser) {
 * Hier wird der Gewinner ausgegeben
 */
 void showWinner(Player* pWinner) {
-    printf ("Der Gewinner ist %s \n",pWinner->name);
+    printf ("Der Gewinner ist %s \n",&pWinner->name);
 
 
 }
 /*
 */
-void replay(pPlayer, pEnemy) {
-    int value;
-    prinf("Willst du nocheinmal eine Runde Quartett Spielen?\n");
-    prinf("Dan gib 1 ein sonst 2\n");
-    scanf_s("%i", value);
+void replay(Player *pPlayer, Player *pEnemy) {
+    int value=0;
+    printf("Willst du nocheinmal eine Runde Quartett Spielen?\n");
+    printf("Dan gib 1 ein sonst 2\n");
+    scanf_s(" %i", value);
     if (value==1) {
         pEnemy->pfirstCardOfList=NULL;
         pPlayer->pfirstCardOfList=NULL;
