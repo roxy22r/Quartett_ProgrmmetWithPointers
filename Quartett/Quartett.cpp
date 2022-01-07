@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <conio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
@@ -18,31 +19,22 @@ typedef struct Player {
 }struPlayer;
 
 int main();
-//
 Card* allCards();
 void addCard(Card* cardToAdd, Player* pPlayer);
-//
 bool checkInputValue(int valueToCompare);
-//
 void distributeCardToPlayers(Player* player, Player* enemy, Player* cardDistributer);
-
 Player* defineHigherCard(Player* pPlayer, Player* pEnemy, int* valueToCheck);
-//
 Card* getIndex(int index, Player* pPlayer);
 Card* getLast(Card* pPlayer);
 Player* getWinner(Player* player, Player* enemy);
-//
 int inputCompareValue();
-//
 Card* moveCardUp(Player* pPlayer, Card* moveTo);
-//
 void playQuartett(Player* pPlayer, Player* pEnemy);
 void printWordQuartett();
-//
 Card* removeCard(Player* pPlayer, Card* pCardToRemove);
 void radomMixOfCardStack(Player* pPlayer);
 void replay(Player* pPlayer, Player* pEnemy);
-//
+void showScore(Player* pPlayer, Player* pEnemy);
 Card* setpNextToNull(Card* card);
 void setupQuartett(Player* pPlayer, Player* pEnemy);
 Card* splittListAndMerge(Player* pPlayer, Card* moveTo);
@@ -59,8 +51,8 @@ Hier wird ein logischer ablauf ausgeführt für das Spiel.
 */
 int main()
 {
-    struPlayer* pPlayer = (struPlayer*)malloc(sizeof(struPlayer));
-    struPlayer* pEnemy = (struPlayer*)malloc(sizeof(struPlayer));
+    struPlayer* pPlayer = (struPlayer*)malloc(sizeof(struPlayer));  if (pPlayer == NULL) exit(-1);
+    struPlayer* pEnemy = (struPlayer*)malloc(sizeof(struPlayer));   if (pEnemy  == NULL) exit(-1);
     strcpy_s(pEnemy->name,"Computer");
     pPlayer = welcome(pPlayer);
     setupQuartett(pPlayer,pEnemy);
@@ -82,10 +74,11 @@ Player* welcome(Player* pPlayer) {
     int* pzahl = &zahl;
     printf("Um das Spiel zu beginnen gib die Zahl  1 ein\n");
     while (zahl != 1) {
-        scanf_s(" %i", pzahl);
+        zahl = _getche() - '0';
     }
     printf("Wie heisst du?\n");
-    scanf_s(" %*s",pPlayer->name);
+    gets_s(pPlayer->name);
+  
     printf("\nSchnelle Anleitung:\n");
     printf("Um den ersten Wert zu vergleichen von der Karte musst du 1 eingeben.\n");
     printf("Um den zweiten Wert zu vergleichen von der Karte musst du 2 eingeben.\n");
@@ -104,7 +97,7 @@ Player* welcome(Player* pPlayer) {
 */
 void playQuartett(Player* pPlayer,Player * pEnemy)
 {
-    while (sizeOfCardStack(pEnemy) != 0 && sizeOfCardStack(pPlayer) != 0)
+    while ((sizeOfCardStack(pEnemy)-1) != 0 && (sizeOfCardStack(pPlayer)-1) != 0)
     {
 
         showFirstElementOfCardStack(pPlayer);
@@ -113,10 +106,7 @@ void playQuartett(Player* pPlayer,Player * pEnemy)
         if (validValue) {
             setupWinnerFromRound(pPlayer, pEnemy, &compear);
 
-            int cardOfPlayer = sizeOfCardStack(pPlayer);
-            int cardOfEnemy = sizeOfCardStack(pEnemy);
-            printf("Du hast: %i Karten\n", cardOfPlayer);
-            printf("Der Gegner hat: %i Karten\n", cardOfEnemy);
+            showScore(pPlayer,pEnemy);
         }
         else {
             printf("Sie dürfen nur 1 oder 2 eingeben!!\n\n\n ");
@@ -124,8 +114,18 @@ void playQuartett(Player* pPlayer,Player * pEnemy)
     }
     Player* winner = getWinner(pPlayer, pEnemy);
     showWinner(winner);
+    replay(pPlayer,pEnemy);
 }
+
+void showScore(Player* pPlayer, Player* pEnemy) {
+    int cardOfPlayer = sizeOfCardStack(pPlayer);
+    int cardOfEnemy = sizeOfCardStack(pEnemy);
+    printf("\nDu hast: %i Karten\n", cardOfPlayer);
+    printf("Der Gegner hat: %i Karten\n", cardOfEnemy);
+}
+
 /*
+* Mit dieser funktion wird der gewinner
 */
 Player* getWinner(Player* player, Player* enemy) {
     int cardOfPlayer = sizeOfCardStack(player);
@@ -164,12 +164,13 @@ Hier werden merhheitlich, die erstellten Methoden aufgerufen.
 
 void setupQuartett(Player* pPlayer,Player* pEnemy) {
     Card* pStart = allCards();
-    struPlayer* pDist = (struPlayer*)malloc(sizeof(struPlayer));
+    struPlayer* pDist = (struPlayer*)malloc(sizeof(struPlayer)); if (pPlayer == NULL) exit(-1);
     Card* pEnd = getLast(pStart);
     pDist->pfirstCardOfList = pStart;
     pDist->pLastCardOfList = pEnd;
     radomMixOfCardStack(pDist);
     distributeCardToPlayers(pPlayer, pEnemy, pDist);
+    showScore(pPlayer,pEnemy);
 }
 
 
@@ -204,14 +205,16 @@ bool checkInputValue(int valueToCompare) {
 */
 void addCard(Card* cardToAdd, Player* pPlayer) {
     cardToAdd->pNext = NULL;
+ if(  NULL!= pPlayer->pLastCardOfList){
     pPlayer->pLastCardOfList->pNext = cardToAdd;
     pPlayer->pLastCardOfList = pPlayer->pLastCardOfList->pNext;
+    }
 }
 /*
 * Autor der Methode Raksana
 * Dise Methode nimmt die Liste auseinander 
 * an einer  bestimmten postition
-* und f�gt sie wieder hinzu.
+* und fuegt sie wieder hinzu.
 * Ein Listen Object wird weggenommen.Das Objekt,
 * dass weggenommen wird wird zur�ck gegeben.
 */
@@ -257,7 +260,7 @@ Card *moveCardUp(Player* pPlayer,Card* moveTo) {
 /*
 * Autor: Raksana
 * Diese Methode entfernt die Karte schiebt, die n�achte Karte hoch 
-* und f�gt die Karte zum Schluss von dem Talon hinzu
+* und fuegt die Karte zum Schluss von dem Talon hinzu
 */
 
 Card * removeCard(Player* pPlayer, Card *pCardToRemove) {
@@ -287,7 +290,7 @@ Card * removeCard(Player* pPlayer, Card *pCardToRemove) {
 */
 
 int sizeOfCardStack(Player* pPlayer) {
-    int count = 0;
+    int count = 1;
     Card* pTemp = pPlayer->pfirstCardOfList;
     while (pTemp->pNext != NULL)
     {
@@ -345,7 +348,7 @@ Card* getLast(Card* pPlayer) {
     Player *pTempPlayer = &tempPlayer;
     pTempPlayer->pfirstCardOfList = pPlayer;
     int indexLastCard=sizeOfCardStack(pTempPlayer);
-   return getIndex(indexLastCard,pTempPlayer);
+   return getIndex(indexLastCard-1,pTempPlayer);
    
 
 }
@@ -368,18 +371,20 @@ void distributeCardToPlayers(Player* player,Player* enemy, Player* cardDistribut
 * Hier werden die Elemente im Quartett aufgelistet
 * */
 void showFirstElementOfCardStack(Player* pPlayer) {
-    printf("\n\n$.Bezeichnung: %s \n",pPlayer->pfirstCardOfList->Bez);
+    printf("\n$.Bezeichnung: %s \n",pPlayer->pfirstCardOfList->Bez);
     printf("1.Nutzungszeit:%i \n",pPlayer->pfirstCardOfList->usetime);
     printf("2.Gewicht: %lf \n\n",pPlayer->pfirstCardOfList->wight);
 }
 
 /*Autor: Raksana
+* Hier wird  der Wert eingescannt 
+* und zurück gegeben
 */
 int inputCompareValue() {
     int valueToCompare;
     int* pvalueToCompare = &valueToCompare;
-    printf("Geben Sie den Vergleichs wert ein: \n");
-    scanf_s(" %i", pvalueToCompare);
+    printf("\nGeben Sie den Vergleichs wert ein: \n");
+   * pvalueToCompare = _getch() - '0';
     return *pvalueToCompare;
 
 }
@@ -427,7 +432,7 @@ void setupCardsOfRound(Player* pWinner,Player* pLoser) {
 * Hier wird der Gewinner ausgegeben
 */
 void showWinner(Player* pWinner) {
-    printf ("Der Gewinner ist %s \n",&pWinner->name);
+    printf ("\n\nDer Gewinner ist %s \n",&pWinner->name);
 
 
 }
@@ -435,12 +440,11 @@ void showWinner(Player* pWinner) {
 */
 void replay(Player *pPlayer, Player *pEnemy) {
     int value=0;
-    printf("Willst du nocheinmal eine Runde Quartett Spielen?\n");
+    printf("\nWillst du nocheinmal eine Runde Quartett Spielen?\n");
     printf("Dan gib 1 ein sonst 2\n");
-    scanf_s(" %i", value);
+    scanf_s("%i", &value);
     if (value==1) {
-        pEnemy->pfirstCardOfList=NULL;
-        pPlayer->pfirstCardOfList=NULL;
+   
         setupQuartett(pPlayer, pEnemy);
         playQuartett(pPlayer, pEnemy);
     }
@@ -450,7 +454,7 @@ void replay(Player *pPlayer, Player *pEnemy) {
 */
 Card* allCards() {
     // 1.) Apple MacBook Pro(2021)
-    struCard* pcard = (struCard*)malloc(sizeof(struCard));
+    struCard* pcard = (struCard*)malloc(sizeof(struCard)); if (pcard == NULL) exit(-1);
     strcpy_s(pcard->Bez, "Apple MacBook Pro(2021)");
     pcard->usetime = 17;
     pcard->wight = 1.6;
